@@ -12,7 +12,11 @@ class TasksScreen extends StatefulWidget {
 }
 
 class _TasksScreenState extends State<TasksScreen> {
+  TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+  TextEditingController deadlineController = TextEditingController();
+  TextEditingController categoryController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
   bool requiredValidator(String? value) {
     return (value == null || value.isEmpty);
@@ -25,7 +29,6 @@ class _TasksScreenState extends State<TasksScreen> {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        backgroundColor: const Color.fromRGBO(20, 171, 236, 1),
         foregroundColor: Colors.white,
         onPressed: () {
           showDialog(
@@ -40,26 +43,67 @@ class _TasksScreenState extends State<TasksScreen> {
                             child: Column(
                               children: [
                                 TextFormField(
+                                  decoration:
+                                      const InputDecoration(hintText: 'Título'),
+                                  validator: (String? value) {
+                                    return requiredValidator(value)
+                                        ? 'Este campo é obrigatório'
+                                        : null;
+                                  },
+                                  controller: titleController,
+                                ),
+                                TextFormField(
+                                  decoration: const InputDecoration(
+                                      hintText: 'Descrição'),
                                   validator: (String? value) {
                                     return requiredValidator(value)
                                         ? 'Este campo é obrigatório'
                                         : null;
                                   },
                                   controller: descriptionController,
-                                )
+                                ),
+                                TextFormField(
+                                  decoration: const InputDecoration(
+                                      hintText: 'Categoria'),
+                                  validator: (String? value) {
+                                    return requiredValidator(value)
+                                        ? 'Este campo é obrigatório'
+                                        : null;
+                                  },
+                                  controller: categoryController,
+                                ),
+                                TextFormField(
+                                  decoration:
+                                      const InputDecoration(hintText: 'Prazo'),
+                                  validator: (String? value) {
+                                    return requiredValidator(value)
+                                        ? 'Este campo é obrigatório'
+                                        : null;
+                                  },
+                                  controller: deadlineController,
+                                ),
                               ],
                             ))),
                     actions: [
-                      ElevatedButton(
-                          child: const Text("Criar"),
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              FirestoreService()
-                                  .createTask(descriptionController.text);
-                              descriptionController.clear();
-                              Navigator.pop(context);
-                            }
-                          })
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                            child: const Text("Criar"),
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                FirestoreService().createTask(
+                                    titleController.text,
+                                    descriptionController.text,
+                                    categoryController.text,
+                                    deadlineController.text);
+                                titleController.clear();
+                                descriptionController.clear();
+                                categoryController.clear();
+                                deadlineController.clear();
+                                Navigator.pop(context);
+                              }
+                            }),
+                      )
                     ],
                   ));
         },
@@ -71,29 +115,16 @@ class _TasksScreenState extends State<TasksScreen> {
         itemBuilder: (BuildContext context, int index) {
           Map<String, dynamic> task = tasks[index];
           return Dismissible(
-            key: UniqueKey(),
-            background: Container(
-              color: Colors.red[800],
-            ),
-            onDismissed: (DismissDirection direction) {
-              FirestoreService().removeTask(task);
-            },
-            child: InkWell(
-              onTap: () async {
-                await FirestoreService().toggleTaskDone(task);
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(task['description']),
-                    CheckIcon(done: task['done']),
-                  ],
-                ),
+              key: UniqueKey(),
+              background: Container(
+                color: Colors.red[800],
               ),
-            ),
-          );
+              onDismissed: (DismissDirection direction) {
+                FirestoreService().removeTask(task);
+              },
+              child: TaskItem(
+                task: task,
+              ));
         },
         separatorBuilder: (BuildContext context, int index) => const Divider(),
       ),
@@ -109,10 +140,40 @@ class CheckIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (done) {
-      return const Icon(FontAwesomeIcons.solidCircleCheck,
-          color: Color.fromRGBO(20, 171, 236, 1));
+      return const Icon(FontAwesomeIcons.solidCircleCheck, color: Colors.blue);
     } else {
       return const Icon(FontAwesomeIcons.solidCircle, color: Colors.grey);
     }
+  }
+}
+
+class TaskItem extends StatelessWidget {
+  final Map<String, dynamic> task;
+  const TaskItem({super.key, required this.task});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () async {
+        await FirestoreService().toggleTaskDone(task);
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              children: [
+                Text(task['title']),
+                Text(task['description']),
+                Text(task['category']),
+                Text(task['deadline']),
+              ],
+            ),
+            CheckIcon(done: task['done']),
+          ],
+        ),
+      ),
+    );
   }
 }

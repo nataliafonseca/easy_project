@@ -18,13 +18,20 @@ class FirestoreService {
     });
   }
 
-  Future<void> createTask(String taskDescription) {
+  Future<void> createTask(
+      String title, String description, String category, String deadline) {
     var user = AuthService().user!;
     var ref = _db.collection('tasklist').doc(user.uid);
 
     var data = {
       'tasks': FieldValue.arrayUnion([
-        {'description': taskDescription, 'done': false}
+        {
+          'description': description,
+          'title': title,
+          'category': category,
+          'deadline': deadline,
+          'done': false
+        }
       ])
     };
 
@@ -49,6 +56,9 @@ class FirestoreService {
         .indexWhere((element) => element['description'] == task['description']);
 
     list.tasks[taskIndex] = {
+      'title': task['title'],
+      'category': task['category'],
+      'deadline': task['deadline'],
       'description': task['description'],
       'done': !task['done']
     };
@@ -64,7 +74,13 @@ class FirestoreService {
 
     var data = {
       'tasks': FieldValue.arrayRemove([
-        {'description': task['description'], 'done': task['done']}
+        {
+          'title': task['title'],
+          'category': task['category'],
+          'deadline': task['deadline'],
+          'description': task['description'],
+          'done': task['done']
+        }
       ])
     };
 

@@ -5,6 +5,14 @@ class AboutScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text('Easy Project by man4s'));
+    return Center(
+      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Image.asset('assets/logo.png'),
+        const SizedBox(
+          height: 20,
+        ),
+        const Text('by man4s')
+      ]),
+    );
   }
 }

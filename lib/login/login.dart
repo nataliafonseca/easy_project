@@ -8,12 +8,13 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: Colors.white,
       padding: const EdgeInsets.all(30),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          const FlutterLogo(size: 150),
+          Image.asset('assets/logo.png'),
           LoginButton(
             text: 'Sign in with Google',
             icon: FontAwesomeIcons.google,

@@ -57,7 +57,7 @@ class _AppRouterState extends State<AppRouter> {
               label: 'Perfil',
             ),
           ],
-          fixedColor: const Color.fromRGBO(20, 171, 236, 1),
+          fixedColor: Colors.blue,
           onTap: _onItemTapped),
     );
   }

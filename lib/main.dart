@@ -1,9 +1,9 @@
 import 'package:easy_projects/entrypoint.dart';
 import 'package:easy_projects/services/firestore.dart';
 import 'package:easy_projects/services/models.dart';
-import 'package:easy_projects/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
@@ -26,7 +26,9 @@ class MyApp extends StatelessWidget {
       initialData: TaskList(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: appTheme,
+        theme: ThemeData(
+          fontFamily: GoogleFonts.nunito().fontFamily,
+        ),
         home: const Entrypoint(),
       ),
     );
