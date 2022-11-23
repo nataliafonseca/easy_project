@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "436894648629",
+    "project_id": "easy-project-47053",
+    "storage_bucket": "easy-project-47053.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:436894648629:android:54bb918c1e77b6de99a47c",
+        "android_client_info": {
+          "package_name": "dev.man4s.easy_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "436894648629-7ilkghnb7qea65q6sqi1rei48a8crqqf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUAz_wNxwr856JnNFEiRMz9fbuowSTZrk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "436894648629-7ilkghnb7qea65q6sqi1rei48a8crqqf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "436894648629-4fnsk8o5kcmakhgbol34shocoqkep83h.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "dev.man4s.easyProject"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
