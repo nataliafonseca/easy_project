@@ -71,7 +71,7 @@ class _TasksScreenState extends State<TasksScreen> {
         itemBuilder: (BuildContext context, int index) {
           Map<String, dynamic> task = tasks[index];
           return Dismissible(
-            key: ValueKey<int>(index),
+            key: UniqueKey(),
             background: Container(
               color: Colors.red[800],
             ),
