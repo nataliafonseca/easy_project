@@ -47,4 +47,15 @@ class FirestoreService {
       ])
     }, SetOptions(merge: true));
   }
+
+  Future<void> removeTask(Task task) {
+    var user = AuthService().user!;
+    var ref = _db.collection('tasklist').doc(user.uid);
+
+    return ref.set({
+      'tasks': FieldValue.arrayRemove([
+        {'description': task.description, 'done': task.done}
+      ])
+    }, SetOptions(merge: true));
+  }
 }

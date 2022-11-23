@@ -70,18 +70,27 @@ class _TasksScreenState extends State<TasksScreen> {
         itemCount: tasks.length,
         itemBuilder: (BuildContext context, int index) {
           Task task = tasks[index];
-          return InkWell(
-            onTap: () {
-              FirestoreService().toggleTaskDone(task);
+          return Dismissible(
+            key: ValueKey<int>(index),
+            background: Container(
+              color: Colors.red[800],
+            ),
+            onDismissed: (DismissDirection direction) {
+              FirestoreService().removeTask(task);
             },
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(task.description),
-                  CheckIcon(done: task.done),
-                ],
+            child: InkWell(
+              onTap: () {
+                FirestoreService().toggleTaskDone(task);
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(task.description),
+                    CheckIcon(done: task.done),
+                  ],
+                ),
               ),
             ),
           );
