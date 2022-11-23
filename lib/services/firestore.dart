@@ -31,31 +31,43 @@ class FirestoreService {
     return ref.set(data, SetOptions(merge: true));
   }
 
-  Future<void> toggleTaskDone(Task task) {
+  Future<TaskList> getTaskList() async {
     var user = AuthService().user!;
+
     var ref = _db.collection('tasklist').doc(user.uid);
-
-    ref.set({
-      'tasks': FieldValue.arrayRemove([
-        {'description': task.description, 'done': task.done}
-      ])
-    }, SetOptions(merge: true));
-
-    return ref.set({
-      'tasks': FieldValue.arrayUnion([
-        {'description': task.description, 'done': !task.done}
-      ])
-    }, SetOptions(merge: true));
+    var snapshot = await ref.get();
+    return TaskList.fromJson(snapshot.data() ?? {});
   }
 
-  Future<void> removeTask(Task task) {
+  Future<void> toggleTaskDone(Map<String, dynamic> task) async {
     var user = AuthService().user!;
     var ref = _db.collection('tasklist').doc(user.uid);
 
-    return ref.set({
+    var snapshot = await ref.get();
+    var list = TaskList.fromJson(snapshot.data() ?? {});
+    var taskIndex = list.tasks
+        .indexWhere((element) => element['description'] == task['description']);
+
+    list.tasks[taskIndex] = {
+      'description': task['description'],
+      'done': !task['done']
+    };
+
+    var data = list.toJson();
+
+    return await ref.update(data);
+  }
+
+  Future<void> removeTask(Map<String, dynamic> task) {
+    var user = AuthService().user!;
+    var ref = _db.collection('tasklist').doc(user.uid);
+
+    var data = {
       'tasks': FieldValue.arrayRemove([
-        {'description': task.description, 'done': task.done}
+        {'description': task['description'], 'done': task['done']}
       ])
-    }, SetOptions(merge: true));
+    };
+
+    return ref.set(data, SetOptions(merge: true));
   }
 }

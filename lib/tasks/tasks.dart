@@ -69,7 +69,7 @@ class _TasksScreenState extends State<TasksScreen> {
         shrinkWrap: true,
         itemCount: tasks.length,
         itemBuilder: (BuildContext context, int index) {
-          Task task = tasks[index];
+          Map<String, dynamic> task = tasks[index];
           return Dismissible(
             key: ValueKey<int>(index),
             background: Container(
@@ -79,16 +79,16 @@ class _TasksScreenState extends State<TasksScreen> {
               FirestoreService().removeTask(task);
             },
             child: InkWell(
-              onTap: () {
-                FirestoreService().toggleTaskDone(task);
+              onTap: () async {
+                await FirestoreService().toggleTaskDone(task);
               },
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(task.description),
-                    CheckIcon(done: task.done),
+                    Text(task['description']),
+                    CheckIcon(done: task['done']),
                   ],
                 ),
               ),
