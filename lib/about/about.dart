@@ -9,7 +9,7 @@ class AboutScreen extends StatelessWidget {
       child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         Image.asset('assets/logo.png'),
         const SizedBox(
-          height: 20,
+          height: 40,
         ),
         const Text('by man4s')
       ]),

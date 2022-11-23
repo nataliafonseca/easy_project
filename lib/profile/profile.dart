@@ -26,7 +26,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               height: 100,
               margin: const EdgeInsets.only(top: 50),
               decoration: BoxDecoration(
-                shape: BoxShape.circle,
+                shape: BoxShape.rectangle,
+                border: Border.all(color: Colors.blue, width: 2),
+                borderRadius: BorderRadius.circular(16),
                 image: DecorationImage(
                   image: NetworkImage(user.photoURL ??
                       'https://www.gravatar.com/avatar/placeholder'),
@@ -34,8 +36,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(user.displayName ?? ''),
+              padding: const EdgeInsets.all(20.0),
+              child: Text(
+                user.displayName ?? '',
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              ),
             ),
             const Spacer(),
             ElevatedButton(
